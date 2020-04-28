@@ -32,7 +32,7 @@ COPY ./pip.conf /tmp/pip.conf
 RUN \
     if $MIRROR; then sed -i "s/dl-cdn.alpinelinux.org/${ALPINE_HOST}/g" /etc/apk/repositories ; mkdir -p ~/.pip/; cp /tmp/pip.conf ~/.pip/pip.conf ; cp /tmp/.pydistutils.cfg ~/.pydistutils.cfg ; fi && \
 
-    apk --update --no-cache add gcc bash curl python-dev tzdata  libmagic tar musl-dev linux-headers g++ libffi-dev libffi openssl-dev && \
+    apk --update --no-cache add gcc bash curl python-dev tzdata  libmagic tar musl-dev linux-headers g++ libffi-dev libffi openssl-dev gettext libintl && \
     
     mkdir -p ${ELASTALERT_PLUGIN_DIRECTORY} && \
     mkdir -p ${RULES_DIRECTORY} && \
