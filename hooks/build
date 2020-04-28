@@ -1,0 +1,2 @@
+#!/bin/bash
+docker build -t $IMAGE_NAME . --build-arg ELASTALERT_VERSION=$ELASTALERT_VERSION --build-arg MIRROR=$MIRROR --build-arg ALPINE_HOST=$ALPINE_HOST
