@@ -49,7 +49,6 @@ RUN \
 COPY ./start-elastalert.sh /opt/start-elastalert.sh
 RUN chmod +x /opt/start-elastalert.sh
 
-COPY ./config.yaml /opt/elastalert/
 COPY ./rules/* ${RULES_DIRECTORY}/
 COPY ./elastalert_modules/* ${ELASTALERT_PLUGIN_DIRECTORY}/
 
