@@ -1,6 +1,6 @@
 # This is the folder that contains the rule yaml files
 # Any .yaml file will be loaded as a rule
-rules_folder: ${RULES_DIRECTORY}
+rules_folder: example_rules
 
 # How often ElastAlert will query Elasticsearch
 # The unit can be anything from weeks to seconds
@@ -14,10 +14,10 @@ buffer_time:
 
 # The Elasticsearch hostname for metadata writeback
 # Note that every rule can have its own Elasticsearch host
-es_host: ${ELASTICSEARCH_HOST}
+es_host: elasticsearch.example.com
 
 # The Elasticsearch port
-es_port: ${ELASTICSEARCH_PORT}
+es_port: 9200
 
 # The AWS region to use. Set this when using AWS-managed elasticsearch
 #aws_region: us-east-1
@@ -43,8 +43,8 @@ es_port: ${ELASTICSEARCH_PORT}
 #es_send_get_body_as: GET
 
 # Option basic-auth username and password for Elasticsearch
-#es_username: ${ELASTICSEARCH_USERNAME}
-#es_password: ${ELASTICSEARCH_PASSWORD}
+#es_username: someusername
+#es_password: somepassword
 
 # Use SSL authentication with client certificates client_cert must be
 # a pem file containing both cert and key for client
