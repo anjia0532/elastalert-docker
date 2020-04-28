@@ -1,6 +1,4 @@
 #!/bin/bash
-echo "pick up env to config.yaml"
-envsubst < config.yaml > config.yaml
 echo "Waiting for Elasticsearch to startup"
 while true; do
     curl ${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT} 2>/dev/null && break
