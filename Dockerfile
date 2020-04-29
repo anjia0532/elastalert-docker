@@ -9,15 +9,17 @@ ARG ALPINE_HOST="mirrors.aliyun.com"
 ARG PIP_MIRROR="https://mirrors.aliyun.com/pypi/simple/"
 ARG DOCKERIZE_VERSION=v0.6.1
 
-ENV ELASTALERT_URL=https://github.com/Yelp/elastalert/archive/${ELASTALERT_VERSION}.tar.gz  \
-    ELASTALERT_HOME=/opt/elastalert \
+# base env
+ENV ELASTALERT_HOME=/opt/elastalert \
+    SET_CONTAINER_TIMEZONE=true \
+    CONTAINER_TIMEZONE=Etc/UTC 
+
+# elastalert env
+ENV ELASTALERT_URL=https://github.com/Yelp/elastalert/archive/${ELASTALERT_VERSION}.tar.gz  \    
     ELASTALERT_RULES_DIRECTORY=${ELASTALERT_HOME}/rules \
     ELASTALERT_PLUGIN_DIRECTORY=${ELASTALERT_HOME}/elastalert_modules \
-    SET_CONTAINER_TIMEZONE=true \
-    CONTAINER_TIMEZONE=Etc/UTC \
-    TZ="${CONTAINER_TIMEZONE}" 
-
-ENV ELASTALERT_CONFIG="${ELASTALERT_HOME}/config.yaml" \
+    TZ="${CONTAINER_TIMEZONE}" \
+    ELASTALERT_CONFIG="${ELASTALERT_HOME}/config.yaml" \
     ELASTALERT_INDEX=elastalert_status \
     ELASTALERT_SYSTEM_GROUP=elastalert \
     ELASTALERT_SYSTEM_USER=elastalert \
@@ -25,7 +27,6 @@ ENV ELASTALERT_CONFIG="${ELASTALERT_HOME}/config.yaml" \
     ELASTICSEARCH_PORT=9200 \
     ELASTICSEARCH_USE_SSL=False \
     ELASTICSEARCH_VERIFY_CERTS=False
-
 
 WORKDIR ${ELASTALERT_HOME}
 
