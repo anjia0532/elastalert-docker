@@ -4,6 +4,16 @@
 
 set -eo pipefail
 
+__install_plugin_dependencies() {
+    # reinstall plugin need install dependencies 
+    if [ -f "${ELASTALERT_PLUGIN_DIRECTORY}\requirements.txt" ]; then
+        echo "=> ${scriptName}: Plugins will install dependencies by ${ELASTALERT_PLUGIN_DIRECTORY}\requirements.txt ... "
+        pip install -r "${ELASTALERT_PLUGIN_DIRECTORY}\requirements.txt"
+    else
+        echo "=> ${scriptName}: Plugins dependencies ${ELASTALERT_PLUGIN_DIRECTORY}\requirements.txt not exist. Skipping install dependencies"
+    fi
+}
+
 __check_rules() {
     # Check the rules and see if they are valid; otherwise, exit
     if [ "$(ls "${ELASTALERT_RULES_DIRECTORY}")" ]; then
@@ -117,6 +127,7 @@ __wait_for_elasticsearch() {
 }
 
 init() {
+    __install_plugin_dependencies
     __set_script_variables
     __set_elastalert_config
     __set_folder_permissions
@@ -138,93 +149,3 @@ fi
 init
 
 exec "$@"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-echo "Waiting for Elasticsearch to startup"
-while true; do
-    curl ${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT} 2>/dev/null && break
-    sleep 1
-done
-
-
-echo "Starting Alerting"
-
-# Set the timezone.
-if [ "$SET_CONTAINER_TIMEZONE" = "true" ]; then
-	unlink /etc/localtime
-	ln -s /usr/share/zoneinfo/${CONTAINER_TIMEZONE} /etc/localtime && \
-	echo "Container timezone set to: $CONTAINER_TIMEZONE"
-else
-	echo "Container timezone not modified"
-fi
-
-if [[ -n "${ELASTICSEARCH_USERNAME:-}" ]]
-then
-	flags="--user ${ELASTICSEARCH_USERNAME}:${ELASTICSEARCH_PASSWORD}"
-else
-	flags=""
-fi
-
-cd /opt/elastalert
-
-if ! curl -f $flags ${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT} >/dev/null 2>&1
-then
-	echo "Elasticsearch not available at ${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}"
-else
-	if ! curl -f $flags ${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}/elastalert_status >/dev/null 2>&1
-	then
-		echo "Creating Elastalert index in Elasticsearch..."
-	    elastalert-create-index --index elastalert_status --old-index ""
-	else
-	    echo "Elastalert index already exists in Elasticsearch."
-	fi
-fi
-
-python -m elastalert.elastalert --verbose
