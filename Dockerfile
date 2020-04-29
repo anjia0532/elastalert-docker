@@ -48,15 +48,16 @@ RUN set -ex && \
     apk add --no-cache \
         ca-certificates \
         tzdata \
+        su-exec \
         dumb-init \
         bash \
+        curl \
         openssl && \
 
     apk add --no-cache --virtual \
         .build-dependencies \
         gcc \ 
         libffi-dev \
-        curl \
         python-dev \
         tar \
         aria2 \
