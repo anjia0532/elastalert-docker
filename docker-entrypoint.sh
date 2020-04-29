@@ -34,7 +34,7 @@ __config_timezone_and_ntp() {
     # Force immediate synchronisation of the time and start the time-synchronization service.
     # In order to be able to use ntpd in the container, it must be run with the SYS_TIME capability.
     # In addition you may want to add the SYS_NICE capability, in order for ntpd to be able to modify its priority.
-    ntpd -s
+    ntpd
 }
 
 __create_elastalert_index() {
@@ -108,7 +108,7 @@ __start_elastalert() {
 
 __wait_for_elasticsearch() {
     # Wait until Elasticsearch is online since otherwise Elastalert will fail.
-    while true; do
+    while true;
     do
         echo "=> ${scriptName}: Waiting for Elasticsearch..."
     	curl "${protocol}${basicAuth}${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}" 2>/dev/null && break
