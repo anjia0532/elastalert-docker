@@ -89,9 +89,9 @@ COPY ./elastalert_modules/* ${ELASTALERT_PLUGIN_DIRECTORY}/
 COPY config.yaml.tpl "${ELASTALERT_HOME}/config.yaml.tpl"
 
 # Copy the script used to launch the Elastalert when a container is started.
-COPY docker-entrypoint.sh /opt/docker-elastalert.sh
+COPY docker-entrypoint.sh /opt/docker-entrypoint.sh
 
-RUN chmod +x /opt/docker-elastalert.sh
+RUN chmod +x /opt/docker-entrypoint.sh
 
 # The square brackets around the 'e' are intentional. They prevent `grep`
 # itself from showing up in the process list and falsifying the results.
@@ -100,4 +100,4 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
     CMD ps -ef | grep "[e]lastalert.elastalert" >/dev/null 2>&1
 
 # Launch Elastalert when a container is started.
-CMD ["/opt/docker-elastalert.sh"]
+CMD ["/opt/docker-entrypoint.sh"]
