@@ -59,13 +59,14 @@ RUN set -ex && \
         curl \
         python-dev \
         tar \
+        aria2 \
         musl-dev \
         openssl-dev && \
     pip install --upgrade pip
 
 # Get Dockerize for configuration templating
 RUN set -ex && \
-    curl -Lo dockerize.tar.gz \
+    aria2c -x5 -o dockerize.tar.gz \
         "https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz" && \
     tar -C /usr/local/bin -xzvf dockerize.tar.gz && \
     chmod +x "/usr/local/bin/dockerize" && \
