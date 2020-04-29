@@ -68,7 +68,7 @@ RUN set -ex && \
 # Get Dockerize for configuration templating
 RUN set -ex && \
     curl -Lo dockerize.tar.gz \
-        "https://github.com/jwilder/dockerize/releases/download/v${DOCKERIZE_VERSION}/dockerize-alpine-linux-amd64-v${DOCKERIZE_VERSION}.tar.gz" && \
+        "https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz" && \
     tar -C /usr/local/bin -xzvf dockerize.tar.gz && \
     chmod +x "/usr/local/bin/dockerize" && \
     rm dockerize.tar.gz
