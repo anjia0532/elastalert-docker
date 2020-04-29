@@ -6,6 +6,7 @@ LABEL maintainer="anjia0532 (anjia0532@gmail.com) Scott Crooks <scott.crooks@gma
 ARG ELASTALERT_VERSION=v0.2.4
 ARG MIRROR=false
 ARG ALPINE_HOST="mirrors.aliyun.com"
+ARG PIP_MIRROR="https://mirrors.aliyun.com/pypi/simple/"
 ARG DOCKERIZE_VERSION=v0.6.1
 
 ENV ELASTALERT_URL=https://github.com/Yelp/elastalert/archive/${ELASTALERT_VERSION}.tar.gz  \
@@ -28,9 +29,6 @@ ENV ELASTALERT_CONFIG="${ELASTALERT_HOME}/config.yaml" \
 
 WORKDIR ${ELASTALERT_HOME}
 
-COPY ./pydistutils.cfg /tmp/.pydistutils.cfg
-COPY ./pip.conf /tmp/pip.conf
-
 # Create directories and Elastalert system user/group.
 # The /var/empty directory is used by openntpd.
 RUN mkdir -p "${ELASTALERT_HOME}" && \
@@ -43,7 +41,7 @@ RUN mkdir -p "${ELASTALERT_HOME}" && \
 
 # set up environment install packages
 RUN set -ex && \
-    if $MIRROR; then sed -i "s/dl-cdn.alpinelinux.org/${ALPINE_HOST}/g" /etc/apk/repositories ; mkdir -p ~/.pip/; cp /tmp/pip.conf ~/.pip/pip.conf ; cp /tmp/.pydistutils.cfg ~/.pydistutils.cfg ; fi && \
+    if $MIRROR; then sed -i "s/dl-cdn.alpinelinux.org/${ALPINE_HOST}/g" /etc/apk/repositories ; pip config set global.index-url ${PIP_MIRROR} ; /bin/echo -e [easy_install]\\nindex-url = ${PIP_MIRROR} >> ${ELASTALERT_HOME}/setup.cfg ; fi && \
 
     apk update && \
     apk upgrade && \
@@ -79,8 +77,6 @@ RUN set -ex && \
     tar -xzvf elastalert.tar.gz -C ${ELASTALERT_HOME} --strip-components 1 && \
     rm elastalert.tar.gz && \
     cd ${ELASTALERT_HOME}  &&\
-    #pip install "requests==2.18.1" &&\
-    #pip install "setuptools>=11.3" && \
     python setup.py install && \
     apk del --purge .build-dependencies && \
     rm -rf /var/cache/apk/*
