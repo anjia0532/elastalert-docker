@@ -1,6 +1,6 @@
 # This is the folder that contains the rule yaml files
 # Any .yaml file will be loaded as a rule
-rules_folder: {{ default .Env.RULES_FOLDER "/opt/rules" }}
+rules_folder: {{ default .Env.ELASTALERT_RULES_DIRECTORY "/opt/rules" }}
 
 # How often ElastAlert will query Elasticsearch
 # The unit can be anything from weeks to seconds
@@ -71,6 +71,9 @@ writeback_index: {{ default .Env.ELASTALERT_INDEX "elastalert_status" }}
 # sending the alert until this time period has elapsed
 alert_time_limit:
   minutes: {{ default .Env.ELASTALERT_TIME_LIMIT "5" }}
+
+disable_rules_on_error: {{ default .Env.ELASTALERT_DISABLE_RULES_ON_ERROR "True" }}
+
 
 {{ if .Env.ELASTALERT_EMAIL }}
 # Email config
