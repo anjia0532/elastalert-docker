@@ -127,8 +127,8 @@ __wait_for_elasticsearch() {
 }
 
 init() {
-    __install_plugin_dependencies
     __set_script_variables
+    __install_plugin_dependencies
     __set_elastalert_config
     __set_folder_permissions
     __check_rules
