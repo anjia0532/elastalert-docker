@@ -14,7 +14,7 @@ ENV ELASTALERT_URL=https://github.com/Yelp/elastalert/archive/${ELASTALERT_VERSI
     ELASTALERT_PLUGIN_DIRECTORY=${ELASTALERT_HOME}/elastalert_modules \
     SET_CONTAINER_TIMEZONE=true \
     CONTAINER_TIMEZONE=Etc/UTC \
-    TZ "${CONTAINER_TIMEZONE}" 
+    TZ="${CONTAINER_TIMEZONE}" 
 
 ENV ELASTALERT_CONFIG="${ELASTALERT_HOME}/config.yaml" \
     ELASTALERT_INDEX=elastalert_status \
