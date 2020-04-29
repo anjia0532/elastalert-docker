@@ -22,18 +22,18 @@ class WeChatAlerter(Alerter):
 
     #企业号id，secret，应用id必填
 
-    required_options = frozenset(['corp_id','secret','agent_id'])
+    required_options = frozenset(['wechat_corp_id','wechat_secret','wechat_agent_id'])
 
     def __init__(self, *args):
         super(WeChatAlerter, self).__init__(*args)
-        self.corp_id = self.rule.get('corp_id', '')     #企业号id
-        self.secret = self.rule.get('secret', '')       #secret
-        self.agent_id = self.rule.get('agent_id', '')   #应用id
+        self.corp_id = self.rule.get('wechat_corp_id', '')     #企业号id
+        self.secret = self.rule.get('wechat_secret', '')       #secret
+        self.agent_id = self.rule.get('wechat_agent_id', '')   #应用id
 
-        self.party_id = self.rule.get('party_id')       #部门id
-        self.user_id = self.rule.get('user_id', '')     #用户id，多人用 | 分割，全部用 @all
-        self.tag_id = self.rule.get('tag_id', '')       #标签id
-        self.access_token = ''                          #微信身份令牌
+        self.party_id = self.rule.get('wechat_party_id')       #部门id
+        self.user_id = self.rule.get('wechat_user_id', '')     #用户id，多人用 | 分割，全部用 @all
+        self.tag_id = self.rule.get('wechat_tag_id', '')       #标签id
+        self.access_token = ''                                 #微信身份令牌
         self.expires_in=datetime.datetime.now() - datetime.timedelta(seconds=60)
 
     def create_default_title(self, matches):
