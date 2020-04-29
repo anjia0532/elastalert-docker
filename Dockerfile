@@ -41,7 +41,7 @@ RUN mkdir -p "${ELASTALERT_HOME}" && \
 
 # set up environment install packages
 RUN set -ex && \
-    if $MIRROR; then sed -i "s/dl-cdn.alpinelinux.org/${ALPINE_HOST}/g" /etc/apk/repositories ; pip config set global.index-url ${PIP_MIRROR} ; /bin/echo -e [easy_install]\\nindex-url = ${PIP_MIRROR} >> ${ELASTALERT_HOME}/setup.cfg ; fi && \
+    if $MIRROR; then sed -i "s/dl-cdn.alpinelinux.org/${ALPINE_HOST}/g" /etc/apk/repositories ; pip config set global.index-url ${PIP_MIRROR} ; /bin/echo -e "[easy_install]\\nindex-url = ${PIP_MIRROR}" >> ~/.pydistutils.cfg ; fi && \
 
     apk update && \
     apk upgrade && \
