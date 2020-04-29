@@ -1,56 +1,107 @@
 FROM python:3.6-alpine
 
-
-LABEL description="ElastAlert for docker"
-LABEL maintainer="anjia0532 (anjia0532@gmail.com)"
+LABEL description="ElastAlert for docker reference @sc250024/docker-elastalert"
+LABEL maintainer="anjia0532 (anjia0532@gmail.com) Scott Crooks <scott.crooks@gmail.com>"
 
 ARG ELASTALERT_VERSION=v0.2.4
 ARG MIRROR=false
 ARG ALPINE_HOST="mirrors.aliyun.com"
+ARG DOCKERIZE_VERSION=v0.6.1
 
-ENV SET_CONTAINER_TIMEZONE true 
-ENV CONTAINER_TIMEZONE UTC
-ENV TZ "${CONTAINER_TIMEZONE}"
+ENV ELASTALERT_URL=https://github.com/Yelp/elastalert/archive/${ELASTALERT_VERSION}.tar.gz  \
+    ELASTALERT_HOME=/opt/elastalert \
+    ELASTALERT_RULES_DIRECTORY=${ELASTALERT_HOME}/rules \
+    ELASTALERT_PLUGIN_DIRECTORY=${ELASTALERT_HOME}/elastalert_modules \
+    SET_CONTAINER_TIMEZONE=true \
+    CONTAINER_TIMEZONE=Etc/UTC \
+    TZ "${CONTAINER_TIMEZONE}" 
 
-ENV ELASTALERT_URL https://github.com/Yelp/elastalert/archive/${ELASTALERT_VERSION}.tar.gz  
-
-ENV ELASTICSEARCH_HOST http://es-hot 
-ENV ELASTICSEARCH_PORT 9200 
-ENV ELASTICSEARCH_USERNAME "" 
-ENV ELASTICSEARCH_PASSWORD ""
-
-ENV ELASTALERT_HOME /opt/elastalert 
-ENV RULES_DIRECTORY /opt/elastalert/rules 
-ENV ELASTALERT_PLUGIN_DIRECTORY /opt/elastalert/elastalert_modules 
+ENV ELASTALERT_CONFIG="${ELASTALERT_HOME}/config.yaml" \
+    ELASTALERT_INDEX=elastalert_status \
+    ELASTALERT_SYSTEM_GROUP=elastalert \
+    ELASTALERT_SYSTEM_USER=elastalert \
+    ELASTICSEARCH_HOST=elasticsearch \
+    ELASTICSEARCH_PORT=9200 \
+    ELASTICSEARCH_USE_SSL=False \
+    ELASTICSEARCH_VERIFY_CERTS=False
 
 
-WORKDIR /opt/elastalert
+WORKDIR ${ELASTALERT_HOME}
 
 COPY ./pydistutils.cfg /tmp/.pydistutils.cfg
 COPY ./pip.conf /tmp/pip.conf
 
-RUN \
+# Create directories and Elastalert system user/group.
+# The /var/empty directory is used by openntpd.
+RUN mkdir -p "${ELASTALERT_HOME}" && \
+    mkdir -p "${ELASTALERT_PLUGIN_DIRECTORY}" && \
+    mkdir -p "${ELASTALERT_RULES_DIRECTORY}" && \
+    mkdir -p /var/empty && \
+    addgroup "${ELASTALERT_SYSTEM_GROUP}" && \
+    adduser -S -G "${ELASTALERT_SYSTEM_GROUP}" "${ELASTALERT_SYSTEM_USER}" && \
+    chown -R "${ELASTALERT_SYSTEM_USER}":"${ELASTALERT_SYSTEM_GROUP}" "${ELASTALERT_HOME}" "${ELASTALERT_PLUGIN_DIRECTORY}" "${ELASTALERT_RULES_DIRECTORY}"
+
+# set up environment install packages
+RUN set -ex && \
     if $MIRROR; then sed -i "s/dl-cdn.alpinelinux.org/${ALPINE_HOST}/g" /etc/apk/repositories ; mkdir -p ~/.pip/; cp /tmp/pip.conf ~/.pip/pip.conf ; cp /tmp/.pydistutils.cfg ~/.pydistutils.cfg ; fi && \
 
-    apk --update --no-cache add gcc bash curl python-dev tzdata  libmagic tar musl-dev linux-headers g++ libffi-dev libffi openssl-dev gettext libintl && \
-    
-    mkdir -p ${ELASTALERT_PLUGIN_DIRECTORY} && \
-    mkdir -p ${RULES_DIRECTORY} && \
-    
+    apk update && \
+    apk upgrade && \
+    apk add --no-cache \
+        ca-certificates \
+        tzdata \
+        dumb-init \
+        bash \
+        openssl && \
+
+    apk add --no-cache --virtual && \
+        .build-dependencies \
+        gcc \ 
+        libffi-dev \
+        curl \
+        python-dev \
+        tar \
+        musl-dev \
+        openssl-dev && \
+    pip install --upgrade pip
+
+# Get Dockerize for configuration templating
+RUN set -ex && \
+    curl -Lo dockerize.tar.gz && \
+        "https://github.com/jwilder/dockerize/releases/download/v${DOCKERIZE_VERSION}/dockerize-alpine-linux-amd64-v${DOCKERIZE_VERSION}.tar.gz" && \
+    tar -C /usr/local/bin -xzvf dockerize.tar.gz && \
+    chmod +x "/usr/local/bin/dockerize" && \
+    rm dockerize.tar.gz
+
+# compile elastalert
+RUN set -ex && \
     curl -Lo elastalert.tar.gz ${ELASTALERT_URL} && \
     tar -xzvf elastalert.tar.gz -C ${ELASTALERT_HOME} --strip-components 1 && \
     rm elastalert.tar.gz && \
     cd ${ELASTALERT_HOME}  &&\
     #pip install "requests==2.18.1" &&\
     #pip install "setuptools>=11.3" && \
-    python setup.py install
+    python setup.py install && \
+    apk del --purge .build-dependencies && \
+    rm -rf /var/cache/apk/*
 
 
-COPY ./start-elastalert.sh /opt/start-elastalert.sh
-RUN chmod +x /opt/start-elastalert.sh
-
-COPY ./rules/* ${RULES_DIRECTORY}/
+COPY ./rules/* ${ELASTALERT_RULES_DIRECTORY}/
 COPY ./elastalert_modules/* ${ELASTALERT_PLUGIN_DIRECTORY}/
 
+# Copy the ${ELASTALERT_HOME} template
+COPY config.yaml.tpl "${ELASTALERT_HOME}/config.yaml.tpl"
+
+# Copy the script used to launch the Elastalert when a container is started.
+COPY docker-entrypoint.sh /opt/docker-elastalert.sh
+
+RUN chmod +x /opt/docker-elastalert.sh
+
+# The square brackets around the 'e' are intentional. They prevent `grep`
+# itself from showing up in the process list and falsifying the results.
+# See here: https://stackoverflow.com/questions/9375711/more-elegant-ps-aux-grep-v-grep
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+    CMD ps -ef | grep "[e]lastalert.elastalert" >/dev/null 2>&1
+
 # Launch Elastalert when a container is started.
-CMD ["/opt/start-elastalert.sh"]
+CMD ["/opt/docker-elastalert.sh"]
