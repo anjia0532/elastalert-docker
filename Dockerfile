@@ -54,7 +54,7 @@ RUN set -ex && \
         bash \
         openssl && \
 
-    apk add --no-cache --virtual && \
+    apk add --no-cache --virtual \
         .build-dependencies \
         gcc \ 
         libffi-dev \
