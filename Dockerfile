@@ -7,7 +7,6 @@ ARG ELASTALERT_VERSION=v0.2.4
 ARG MIRROR=false
 ARG ALPINE_HOST="mirrors.aliyun.com"
 ARG PIP_MIRROR="https://mirrors.aliyun.com/pypi/simple/"
-ARG DOCKERIZE_VERSION=v0.6.1
 
 # base env
 ENV ELASTALERT_HOME=/opt/elastalert \
@@ -29,6 +28,10 @@ ENV ELASTALERT_URL=https://github.com/Yelp/elastalert/archive/${ELASTALERT_VERSI
     ELASTICSEARCH_VERIFY_CERTS=False
 
 WORKDIR ${ELASTALERT_HOME}
+
+# Get Dockerize for configuration templating
+COPY --from=jwilder/dockerize:0.6.1 /usr/local/bin/dockerize /usr/local/bin/dockerize
+RUN chmod +x "/usr/local/bin/dockerize"
 
 # Create directories and Elastalert system user/group.
 # The /var/empty directory is used by openntpd.
@@ -62,18 +65,9 @@ RUN set -ex && \
         libffi-dev \
         python-dev \
         tar \
-        aria2 \
         musl-dev \
         openssl-dev && \
     pip install --upgrade pip
-
-# Get Dockerize for configuration templating
-RUN set -ex && \
-    aria2c -x10 -j10 -o dockerize.tar.gz \
-        "https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz" && \
-    tar -C /usr/local/bin -xzvf dockerize.tar.gz && \
-    chmod +x "/usr/local/bin/dockerize" && \
-    rm dockerize.tar.gz
 
 # compile elastalert
 RUN set -ex && \
