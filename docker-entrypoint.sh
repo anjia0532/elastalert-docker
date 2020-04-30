@@ -5,12 +5,22 @@
 set -eo pipefail
 
 __install_plugin_dependencies() {
-    # reinstall plugin need install dependencies 
+    # reinstall plugin's' dependencies 
     if [ -f "${ELASTALERT_PLUGIN_DIRECTORY}\requirements.txt" ]; then
         echo "=> ${scriptName}: Plugins will install dependencies by ${ELASTALERT_PLUGIN_DIRECTORY}\requirements.txt ... "
         pip install -r "${ELASTALERT_PLUGIN_DIRECTORY}\requirements.txt"
     else
         echo "=> ${scriptName}: Plugins dependencies ${ELASTALERT_PLUGIN_DIRECTORY}\requirements.txt not exist. Skipping install dependencies"
+    fi
+}
+
+__install_enhancement_dependencies() {
+    # reinstall enhancement's dependencies 
+    if [ -f "${ELASTALERT_ENHANCEMENT_DIRECTORY}\requirements.txt" ]; then
+        echo "=> ${scriptName}: Enhancements will install dependencies by ${ELASTALERT_ENHANCEMENT_DIRECTORY}\requirements.txt ... "
+        pip install -r "${ELASTALERT_ENHANCEMENT_DIRECTORY}\requirements.txt"
+    else
+        echo "=> ${scriptName}: Enhancements dependencies ${ELASTALERT_ENHANCEMENT_DIRECTORY}\requirements.txt not exist. Skipping install dependencies"
     fi
 }
 
@@ -128,6 +138,7 @@ __wait_for_elasticsearch() {
 
 init() {
     __set_script_variables
+    __install_enhancement_dependencies
     __install_plugin_dependencies
     __set_elastalert_config
     __set_folder_permissions
@@ -140,6 +151,8 @@ init() {
 
 if [ "${1}" == "check-rules" ]; then
     __set_script_variables
+    __install_enhancement_dependencies
+    __install_plugin_dependencies
     __set_elastalert_config
     __set_folder_permissions
     __check_rules

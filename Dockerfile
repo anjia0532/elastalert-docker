@@ -18,6 +18,7 @@ ENV ELASTALERT_HOME=/opt/elastalert \
 ENV ELASTALERT_URL=https://github.com/Yelp/elastalert/archive/${ELASTALERT_VERSION}.tar.gz  \    
     ELASTALERT_RULES_DIRECTORY=${ELASTALERT_HOME}/rules \
     ELASTALERT_PLUGIN_DIRECTORY=${ELASTALERT_HOME}/elastalert_modules \
+    ELASTALERT_ENHANCEMENT_DIRECTORY=${ELASTALERT_HOME}/elastalert_enhancements \
     ELASTALERT_CONFIG="${ELASTALERT_HOME}/config.yaml" \
     ELASTALERT_INDEX=elastalert_status \
     ELASTALERT_SYSTEM_GROUP=elastalert \
@@ -33,6 +34,7 @@ WORKDIR ${ELASTALERT_HOME}
 # The /var/empty directory is used by openntpd.
 RUN mkdir -p "${ELASTALERT_HOME}" && \
     mkdir -p "${ELASTALERT_PLUGIN_DIRECTORY}" && \
+    mkdir -p "${ELASTALERT_ENHANCEMENT_DIRECTORY}" && \
     mkdir -p "${ELASTALERT_RULES_DIRECTORY}" && \
     mkdir -p /var/empty && \
     addgroup "${ELASTALERT_SYSTEM_GROUP}" && \
@@ -86,6 +88,7 @@ RUN set -ex && \
 
 COPY ./rules/* ${ELASTALERT_RULES_DIRECTORY}/
 COPY ./elastalert_modules/* ${ELASTALERT_PLUGIN_DIRECTORY}/
+COPY ./elastalert_enhancements/* ${ELASTALERT_ENHANCEMENT_DIRECTORY}/
 
 # Copy the ${ELASTALERT_HOME} template
 COPY config.yaml.tpl "${ELASTALERT_HOME}/config.yaml.tpl"
