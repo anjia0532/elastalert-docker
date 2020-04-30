@@ -212,13 +212,14 @@ docker build . -t anjia0532/elastalert-docker:v0.2.4 \
  - elastalert part : Much of this repositiory was based off of the [sc250024/docker-elastalert](https://github.com/sc250024/docker-elastalert)
  - alerter part :  Much of plugins(alerter and enhancements) was based off my repo [anjia0532/elastalert-wechat-plugin](https://github.com/anjia0532/elastalert-wechat-plugin)
 
- > elastalert部分: 大多是基于 [sc250024/docker-elastalert](https://github.com/sc250024/docker-elastalert) 的项目，我从中学到了很多。
- > 报警器部分: 报警器和增强器部分主要基于我另外一个项目 [anjia0532/elastalert-wechat-plugin](https://github.com/anjia0532/elastalert-wechat-plugin)
+ > - elastalert部分: 大多是基于 [sc250024/docker-elastalert](https://github.com/sc250024/docker-elastalert) 的项目，我从中学到了很多。
+ > - 报警器部分: 报警器和增强器部分主要基于我另外一个项目 [anjia0532/elastalert-wechat-plugin](https://github.com/anjia0532/elastalert-wechat-plugin)
 
 
 ## Feedback(反馈)
 
 welcome to [commit new issues](https://github.com/anjia0532/elastalert-docker/issues/new) 
+
 > 有问题的话欢迎提交 [新的 issues](https://github.com/anjia0532/elastalert-docker/issues/new) 来向我反馈
 
 
