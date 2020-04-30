@@ -5,7 +5,9 @@ elastalert docker images , this image include Wechat enterprise alerter plugin a
 
 
 ## Features(特性)
+
 - Making everything available using environment variables. (通过环境变量进行构建和配置)
+
 - Integration with the following external services via environment variables: (通过环境变量进行外部服务集成)
   * E-mail (General SMTP) (SMTP方式的email)
   * Exotel
@@ -20,16 +22,20 @@ elastalert docker images , this image include Wechat enterprise alerter plugin a
   * VictorOps
   * **Wechat** (微信企业号)
   * **Dingtalk** (钉钉群机器人)
+
 - NTP syncrhonization and support change timezone. (同步NTP同步时间，并且支持修改时区)
+
 - Startup check and install enhancement's and alerter's dependencies. (启动时检查和安装增强器和报警器的依赖pip包)
+
 - Offset @timestamp to local time(Use timezone) (支持根据本地时区修改 @timestamp)
 
 ## Usage(使用)
 
 ```bash
-docker run -e"ELASTICSEARCH_HOST:es-host" -e"CONTAINER_TIMEZONE:Asia/Shanghai" -e"TZ:Asia/Shanghai" -e"ELASTALERT_DINGTALK_ACCESS_TOKEN:xxx" -e"ELASTALERT_DINGTALK_SECURITY_TYPE:sign" -e"ELASTALERT_DINGTALK_SECRET:xxx" anjia0532/elastalert-docker:v0.2.4
+docker run -e"ELASTICSEARCH_HOST:es-host" -e"CONTAINER_TIMEZONE:Asia/Shanghai" \
+    -e"TZ:Asia/Shanghai" -e"ELASTALERT_DINGTALK_ACCESS_TOKEN:xxx" -e"ELASTALERT_DINGTALK_SECURITY_TYPE:sign" \
+    -e"ELASTALERT_DINGTALK_SECRET:xxx" anjia0532/elastalert-docker:v0.2.4
 ```
-
 
 ## Environment Variables(环境变量)
 
@@ -38,6 +44,7 @@ docker run -e"ELASTICSEARCH_HOST:es-host" -e"CONTAINER_TIMEZONE:Asia/Shanghai" -
 These variables are set during the Docker build, and are generally necessary for running core functionality of Elastalert.
 
 > 在构建镜像时设置的环境变量，是运行Elastalert所必须的
+
 
 | Env var | Elastalert config var | Default | Description |
 | :--- | :--- | :--- | :--- |
@@ -63,6 +70,8 @@ These variables are settings available in the Elastalert configuration file. Mos
 
 > 这些环境变量都是Elastalert 配置文件所需的，主要是[通用配置](https://elastalert.readthedocs.io/en/latest/ruletypes.html#common-configuration-options)和三方集成配置(Wechat,dingtalk等)
 
+#### common configuration options(常用配置)
+
 | Env var | Elastalert config var | Default | Description |
 | :--- | :--- | :--- | :--- |
 | ELASTALERT_RUN_EVERY | `run_every: => minutes:` | `3` | Number of minutes to wait before re-checking Elastalert rules. Currently only available as values in minutes |
@@ -80,29 +89,33 @@ These variables are settings available in the Elastalert configuration file. Mos
 | ELASTICSEARCH_PASSWORD | `es_password`| No default set |  |
 | ELASTICSEARCH_USER | `es_username`| No default set |  |
 
+#### third-party integrations(三方集成)
+
+| Env var | Elastalert config var | Default | Description |
+| :--- | :--- | :--- | :--- |
+| E-mail| | | |
 | ELASTALERT_EMAIL | `email`| No default set |  |
 | ELASTALERT_EMAIL_REPLY_TO | `email_reply_to`| No default set |  |
 | ELASTALERT_FROM_ADDR | `from_addr`| No default set |  |
 | ELASTALERT_NOTIFY_EMAIL | `notify_email`| No default set |  |
 | ELASTALERT_SMTP_HOST | `smtp_host`| No default set |  |
-
-
+| exotel| | | |
 | ELASTALERT_EXOTEL_ACCOUNT_SID | `exotel_account_sid`| No default set |  |
 | ELASTALERT_EXOTEL_AUTH_TOKEN | `exotel_auth_token`| No default set |  |
 | ELASTALERT_EXOTEL_FROM_NUMBER | `exotel_from_number`| No default set |  |
 | ELASTALERT_EXOTEL_TO_NUMBER | `exotel_to_number`| No default set |  |
-
+| gitter| | | |
 | ELASTALERT_GITTER_MSG_LEVEL | `gitter_msg_level`| No default set |  |
 | ELASTALERT_GITTER_PROXY | `gitter_proxy`| No default set |  |
 | ELASTALERT_GITTER_WEBHOOK_URL | `gitter_webhook_url`| No default set |  |
-
+| hipchat| | | |
 | ELASTALERT_HIPCHAT_AUTH_TOKEN | `hipchat_auth_token`| No default set |  |
 | ELASTALERT_HIPCHAT_DOMAIN | `hipchat_domain`| No default set |  |
 | ELASTALERT_HIPCHAT_FROM | `hipchat_from`| No default set |  |
 | ELASTALERT_HIPCHAT_IGNORE_SSL_ERRORS | `hipchat_ignore_ssl_errors`| No default set |  |
 | ELASTALERT_HIPCHAT_NOTIFY | `hipchat_notify`| No default set |  |
 | ELASTALERT_HIPCHAT_ROOM_ID | `hipchat_room_id`| No default set |  |
-
+| jira| | | |
 | ELASTALERT_JIRA_ACCOUNT_FILE | `jira_account_file`| No default set |  |
 | ELASTALERT_JIRA_ASSIGNEE | `jira_assignee`| No default set |  |
 | ELASTALERT_JIRA_BUMP_IN_STATUSES | `jira_bump_in_statuses`| No default set |  |
@@ -117,7 +130,7 @@ These variables are settings available in the Elastalert configuration file. Mos
 | ELASTALERT_JIRA_PROJECT | `jira_project`| No default set |  |
 | ELASTALERT_JIRA_SERVER | `jira_server`| No default set |  |
 | ELASTALERT_JIRA_WATCHERS | `jira_watchers`| No default set |  |
-
+| opsgenie| | | |
 | ELASTALERT_OPSGENIE_ACCOUNT | `opsgenie_account`| No default set |  |
 | ELASTALERT_OPSGENIE_ADDR | `opsgenie_addr`| No default set |  |
 | ELASTALERT_OPSGENIE_ALIAS | `opsgenie_alias`| No default set |  |
@@ -127,11 +140,11 @@ These variables are settings available in the Elastalert configuration file. Mos
 | ELASTALERT_OPSGENIE_RECIPIENTS | `opsgenie_recipients`| No default set |  |
 | ELASTALERT_OPSGENIE_TAGS | `opsgenie_tags`| No default set |  |
 | ELASTALERT_OPSGENIE_TEAMS | `opsgenie_teams`| No default set |  |
-
+| pagerduty| | | |
 | ELASTALERT_PAGERDUTY_CLIENT_NAME | `pagerduty_client_name`| No default set |  |
 | ELASTALERT_PAGERDUTY_EVENT_TYPE | `pagerduty_event_type`| No default set |  |
 | ELASTALERT_PAGERDUTY_SERVICE_KEY | `pagerduty_service_key`| No default set |  |
-
+| slack| | | |
 | ELASTALERT_SLACK_EMOJI_OVERRIDE | `slack_emoji_override`| No default set |  |
 | ELASTALERT_SLACK_ICON_URL_OVERRIDE | `slack_icon_url_override`| No default set |  |
 | ELASTALERT_SLACK_MSG_COLOR | `slack_msg_color`| No default set |  |
@@ -139,16 +152,16 @@ These variables are settings available in the Elastalert configuration file. Mos
 | ELASTALERT_SLACK_TEXT_STRING | `slack_text_string`| No default set |  |
 | ELASTALERT_SLACK_USERNAME_OVERRIDE | `slack_username_override`| No default set |  |
 | ELASTALERT_SLACK_WEBHOOK_URL | `slack_webhook_url`| No default set |  |
-
+| telegram| | | |
 | ELASTALERT_TELEGRAM_API_URL | `telegram_api_url`| No default set |  |
 | ELASTALERT_TELEGRAM_BOT_TOKEN | `telegram_bot_token`| No default set |  |
 | ELASTALERT_TELEGRAM_ROOM_ID | `telegram_room_id`| No default set |  |
-
+| twilio| | | |
 | ELASTALERT_TWILIO_ACCOUNT_SID | `twilio_account_sid`| No default set |  |
 | ELASTALERT_TWILIO_AUTH_TOKEN | `twilio_auth_token`| No default set |  |
 | ELASTALERT_TWILIO_FROM_NUMBER | `twilio_from_number`| No default set |  |
 | ELASTALERT_TWILIO_TO_NUMBER | `twilio_to_number`| No default set |  |
-
+| victorops| | | |
 | ELASTALERT_VICTOROPS_API_KEY | `victorops_api_key`| No default set |  |
 | ELASTALERT_VICTOROPS_ENTITY_DISPLAY_NAME | `victorops_entity_display_name`| No default set |  |
 | ELASTALERT_VICTOROPS_MESSAGE_TYPE | `victorops_message_type`| No default set |  |
