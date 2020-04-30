@@ -74,6 +74,9 @@ alert_time_limit:
 
 disable_rules_on_error: {{ default .Env.ELASTALERT_DISABLE_RULES_ON_ERROR "True" }}
 
+match_enhancements: {{ default .Env.ELASTALERT_MATCH_ENHANCEMENTS "[]" }}
+
+run_enhancements_first: {{ default .Env.ELASTALERT_RUN_ENHANCEMENTS_FIRST "False" }}
 
 {{ if .Env.ELASTALERT_EMAIL }}
 # Email config
