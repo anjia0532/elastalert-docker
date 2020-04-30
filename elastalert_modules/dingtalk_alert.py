@@ -34,7 +34,7 @@ class DingTalkAlerter(Alerter):
         super(DingTalkAlerter, self).__init__(rule)
 
         self.access_token = self.rule.get('dingtalk_access_token', '')          #钉钉access_token
-        self.secret = self.rule.get('dt_sedingtalk_secretcret', '')             #如果安全验证是签名模式需要带上 secret
+        self.secret = self.rule.get('dingtalk_secret', '')                      #如果安全验证是签名模式需要带上 secret
         self.mobiles = self.rule.get('dingtalk_at_mobiles', [])                 #@的手机号
 
         self.at_all = self.rule.get('dingtalk_at_all', False)                   #是否@全部
