@@ -18,7 +18,6 @@ ENV ELASTALERT_HOME=/opt/elastalert \
 ENV ELASTALERT_URL=https://github.com/Yelp/elastalert/archive/${ELASTALERT_VERSION}.tar.gz  \    
     ELASTALERT_RULES_DIRECTORY=${ELASTALERT_HOME}/rules \
     ELASTALERT_PLUGIN_DIRECTORY=${ELASTALERT_HOME}/elastalert_modules \
-    TZ="${CONTAINER_TIMEZONE}" \
     ELASTALERT_CONFIG="${ELASTALERT_HOME}/config.yaml" \
     ELASTALERT_INDEX=elastalert_status \
     ELASTALERT_SYSTEM_GROUP=elastalert \
