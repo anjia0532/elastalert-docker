@@ -80,9 +80,9 @@ These variables are settings available in the Elastalert configuration file. Mos
 | ELASTICSEARCH_URL_PREFIX | `es_url_prefix`| No default set |  |
 | ELASTICSEARCH_SEND_GET_BODY_AS | `es_send_get_body_as`| No default set |  |
 | ELASTALERT_TIME_LIMIT | `alert_time_limit: => minutes:`| `5` | If an alert fails for some reason, ElastAlert will retry sending the alert until this time period has elapsed |
-| ELASTALERT_DISABLE_RULES_ON_ERROR | `disable_rules_on_error: => Bool`| `True` | if an alert throws exception ,disable this alerter |
-| ELASTALERT_MATCH_ENHANCEMENTS | `match_enhancements: => array` | No Default set | enhancements | 
-| ELASTALERT_RUN_ENHANCEMENTS_FIRST | `run_enhancements_first: => Bool` | False | run_enhancements_first |
+| ELASTALERT_DISABLE_RULES_ON_ERROR | `disable_rules_on_error: => Bool`| `True` | If true, ElastAlert will disable rules which throw uncaught (not EAException) exceptions |
+| ELASTALERT_MATCH_ENHANCEMENTS | `match_enhancements: => array` | No Default set |  A list of enhancement modules to use with this rule | 
+| ELASTALERT_RUN_ENHANCEMENTS_FIRST | `run_enhancements_first: => Bool` | False | If set to true, enhancements will be run as soon as a match is found |
 | ELASTICSEARCH_CA_CERTS | `ca_certs`| No default set |  |
 | ELASTICSEARCH_CLIENT_CERT | `client_cert`| No default set |  |
 | ELASTICSEARCH_CLIENT_KEY | `client_key`| No default set |  |
@@ -93,6 +93,20 @@ These variables are settings available in the Elastalert configuration file. Mos
 
 | Env var | Elastalert config var | Default | Description |
 | :--- | :--- | :--- | :--- |
+| wechat | | | |
+| ELASTALERT_WECHAT_CORP_ID | `wechat_corp_id`| No default set | corp id |
+| ELASTALERT_WECHAT_SECRET | `wechat_secret`| No default set | corp secret |
+| ELASTALERT_WECHAT_AGENT_ID | `wechat_agent_id`| No default set | agent id |
+| ELASTALERT_WECHAT_PARTY_ID | `wechat_party_id`| No default set | party id (party1,party2...) |
+| ELASTALERT_WECHAT_USER_ID | `wechat_user_id`| No default set | user id (user1,user2,user3...) |
+| ELASTALERT_WECHAT_TAG_ID | `wechat_tag_id`| No default set | tag id(tag1,tag2,tag3...) |
+| wechat | | | |
+| ELASTALERT_DINGTALK_ACCESS_TOKEN | `dingtalk_access_token`| No default set | dingtalk access token |
+| ELASTALERT_DINGTALK_SECURITY_TYPE | `dingtalk_security_type`| sign | sign/keyword/whitelist |
+| ELASTALERT_DINGTALK_SECRET | `dingtalk_secret`| No default set | if ELASTALERT_DINGTALK_SECURITY_TYPE ==sign, must be not null |
+| ELASTALERT_DINGTALK_AT_MOBILES | `dingtalk_at_mobiles`| No default set | phone's array to @someone |
+| ELASTALERT_DINGTALK_AT_ALL | `dingtalk_at_all`| False | @all or not |
+| ELASTALERT_DINGTALK_MSGTYPE | `dingtalk_msgtype`| text | text/markdown |
 | E-mail| | | |
 | ELASTALERT_EMAIL | `email`| No default set |  |
 | ELASTALERT_EMAIL_REPLY_TO | `email_reply_to`| No default set |  |
