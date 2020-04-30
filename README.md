@@ -174,7 +174,9 @@ git clone https://github.com/anjia0532/elastalert-docker.git
 
 cd elastalert-docker
 
-docker build . -t anjia0532/elastalert-docker:v0.2.4 [-t anjia0532/elastalert-docker:latest] [--build-arg ELASTALERT_VERSION=0.2.4] [--build-arg MIRROR=true --build-arg ALPINE_HOST="mirrors.aliyun.com" --build-arg PIP_MIRROR="https://mirrors.aliyun.com/pypi/simple/"] 
+docker build . -t anjia0532/elastalert-docker:v0.2.4 \ 
+    [-t anjia0532/elastalert-docker:latest] [--build-arg ELASTALERT_VERSION=0.2.4] \
+    [--build-arg MIRROR=true --build-arg ALPINE_HOST="mirrors.aliyun.com" --build-arg PIP_MIRROR="https://mirrors.aliyun.com/pypi/simple/"] 
 
 ```
 **Note:**
