@@ -114,7 +114,7 @@ class WeChatAlerter(Alerter):
             'msgtype': "text",
             "agentid": self.agent_id,
             "text":{
-                "content": content.encode('UTF-8') #避免中文字符发送失败
+                "content": content
                },
             "safe":"0"
         }
@@ -123,7 +123,7 @@ class WeChatAlerter(Alerter):
         # 如果需要设置代理，可修改此参数并传入requests
         # proxies = {'https': self.pagerduty_proxy} if self.pagerduty_proxy else None
         try:
-            response = requests.post(send_url, data=json.dumps(payload, ensure_ascii=False), headers=headers)
+            response = requests.post(send_url, data=json.dumps(payload), headers=headers)
             response.raise_for_status()
         except RequestException as e:
             raise EAException("send message has error: %s" % e)
