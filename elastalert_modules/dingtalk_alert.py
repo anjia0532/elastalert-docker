@@ -65,7 +65,7 @@ class DingTalkAlerter(Alerter):
             },
             "msgtype": self.msgtype,
         }
-        if self.dt_msgtype == 'markdown':
+        if self.msgtype == 'markdown':
             content = {
                 'title': self.create_title(matches),
                 'text': body
@@ -73,15 +73,15 @@ class DingTalkAlerter(Alerter):
         else:
             content = {'content': body}
         
-        data[self.dt_msgtype] = content
+        data[self.msgtype] = content
 
         webhook_url = 'https://oapi.dingtalk.com/robot/send?access_token=%s' %( self.access_token)
 
         if self.security_type == "sign":
-            webhook_url = '%s%s' %(webhook_url , sign(self))
+            webhook_url = '%s%s' %(webhook_url , self.sign())
         
         try:
-            response = requests.post(webhook_url, data=json.dumps(data, ensure_ascii=False), headers=headers)
+            response = requests.post(webhook_url, data=json.dumps(data), headers=headers)
             response.raise_for_status()
         except RequestException as e:
             raise EAException("send message has error: %s" % e)
