@@ -64,7 +64,7 @@ These variables are set during the Docker build, and are generally necessary for
 | ELASTICSEARCH_USE_SSL | `use_ssl` | `False` | Connect with TLS to Elasticsearch |
 | ELASTICSEARCH_VERIFY_CERTS | `verify_certs` | `False` | Use SSL authentication with client certificates |
 
-### Set at runtime
+### Set at runtime(启动时设置)
 
 These variables are settings available in the Elastalert configuration file. Most of these settings apply to third-party integrations (JIRA, OpsGenie, etc), or are things documented here: [Elastalert common configuration options](https://elastalert.readthedocs.io/en/latest/ruletypes.html#common-configuration-options)
 
@@ -93,14 +93,14 @@ These variables are settings available in the Elastalert configuration file. Mos
 
 | Env var | Elastalert config var | Default | Description |
 | :--- | :--- | :--- | :--- |
-| wechat | | | |
+| wechat(微信企业号) | | | |
 | ELASTALERT_WECHAT_CORP_ID | `wechat_corp_id`| No default set | corp id |
 | ELASTALERT_WECHAT_SECRET | `wechat_secret`| No default set | corp secret |
 | ELASTALERT_WECHAT_AGENT_ID | `wechat_agent_id`| No default set | agent id |
 | ELASTALERT_WECHAT_PARTY_ID | `wechat_party_id`| No default set | party id (party1,party2...) |
 | ELASTALERT_WECHAT_USER_ID | `wechat_user_id`| No default set | user id (user1,user2,user3...) |
 | ELASTALERT_WECHAT_TAG_ID | `wechat_tag_id`| No default set | tag id(tag1,tag2,tag3...) |
-| wechat | | | |
+| dingtalk(钉钉群机器人) | | | |
 | ELASTALERT_DINGTALK_ACCESS_TOKEN | `dingtalk_access_token`| No default set | dingtalk access token |
 | ELASTALERT_DINGTALK_SECURITY_TYPE | `dingtalk_security_type`| sign | sign/keyword/whitelist |
 | ELASTALERT_DINGTALK_SECRET | `dingtalk_secret`| No default set | if ELASTALERT_DINGTALK_SECURITY_TYPE ==sign, must be not null |
