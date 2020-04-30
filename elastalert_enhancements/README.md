@@ -10,9 +10,9 @@
 
 ## TimeEnhancement.py (修改时间时区)
 
-- set env SET_CONTAINER_TIMEZONE=True and CONTAINER_TIMEZONE=Asia/Shanghai(default is Etc/UTC) (启动时设置环境变量 SET_CONTAINER_TIMEZONE=true CONTAINER_TIMEZONE=你的时区，比如东八区 Asia/Shanghai,默认是UTC，格林尼治时间)
-- set env ELASTALERT_RUN_ENHANCEMENTS_FIRST=True and ELASTALERT_MATCH_ENHANCEMENTS=["elastalert_enhancements.TimeEnhancement"] (启动时设置环境变量 ELASTALERT_RUN_ENHANCEMENTS_FIRST=true 和 ELASTALERT_MATCH_ENHANCEMENTS=["elastalert_enhancements.TimeEnhancement"])
-- use local_time,local_starttime,local_endtime (local_time 是 @timestamp转化成本地时间的字段名,local_starttime 本地化开始时间，local_endtime 本地化结束时间)
+- set env `SET_CONTAINER_TIMEZONE=True` and `CONTAINER_TIMEZONE=Asia/Shanghai`(default is `Etc/UTC`) (启动时设置环境变量 `SET_CONTAINER_TIMEZONE=true` `CONTAINER_TIMEZONE=你的时区`，比如东八区 `Asia/Shanghai`,默认是`UTC`，格林尼治时间)
+- set env `ELASTALERT_RUN_ENHANCEMENTS_FIRST=True` and `ELASTALERT_MATCH_ENHANCEMENTS=["elastalert_enhancements.TimeEnhancement"]` (启动时设置环境变量 `ELASTALERT_RUN_ENHANCEMENTS_FIRST=true` 和 `ELASTALERT_MATCH_ENHANCEMENTS=["elastalert_enhancements.TimeEnhancement"]` )
+- use `local_time`,`local_starttime`,`local_endtime` ( `local_time` 是 `@timestamp` 转化成本地时间的字段名, `local_starttime` 本地化开始时间，`local_endtime` 本地化结束时间)
 
 ### Usege(使用)
 ```yaml
