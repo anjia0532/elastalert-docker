@@ -32,9 +32,9 @@ elastalert docker images , this image include Wechat enterprise alerter plugin a
 ## Usage(使用)
 
 ```bash
-docker run -e"ELASTICSEARCH_HOST:es-host" -e"CONTAINER_TIMEZONE:Asia/Shanghai" \
-    -e"TZ:Asia/Shanghai" -e"ELASTALERT_DINGTALK_ACCESS_TOKEN:xxx" -e"ELASTALERT_DINGTALK_SECURITY_TYPE:sign" \
-    -e"ELASTALERT_DINGTALK_SECRET:xxx" anjia0532/elastalert-docker:v0.2.4
+docker run -e"ELASTICSEARCH_HOST=es-host" -e"CONTAINER_TIMEZONE=Asia/Shanghai" \
+    -e"TZ=Asia/Shanghai" -e"ELASTALERT_DINGTALK_ACCESS_TOKEN=xxx" -e"ELASTALERT_DINGTALK_SECURITY_TYPE=sign" \
+    -e"ELASTALERT_DINGTALK_SECRET=xxx" anjia0532/elastalert-docker:v0.2.4
 ```
 
 ## Environment Variables(环境变量)
