@@ -37,6 +37,63 @@ docker run -e"ELASTICSEARCH_HOST=es-host" -e"CONTAINER_TIMEZONE=Asia/Shanghai" \
     -e"ELASTALERT_DINGTALK_SECRET=xxx" anjia0532/elastalert-docker:v0.2.4
 ```
 
+## demo rules(示例rules)
+```yaml
+name: log-error
+type: frequency
+index: logstash-*
+num_events: 20
+timeframe:
+    minutes: 5
+filter:
+- query:
+    query_string:
+      query: "level:ERROR"
+
+query_key:
+- app_name
+
+# 告警抑制
+# 5 分钟内相同的报警不会重复发送
+realert:
+  minutes: 5
+
+exponential_realert:
+# 指数级扩大 realert 时间，中间如果有报警，
+# 则按照 5 -> 10 -> 20 -> 40 -> 60 不断增大报警时间到制定的最大时间，
+# 如果之后报警减少，则会慢慢恢复原始 realert 时间
+exponential_realert:
+  hours: 1
+
+alert:
+- "elastalert_modules.dingtalk_alert.DingTalkAlerter"
+#- "elastalert_modules.wechat_qiye_alert.WeChatAlerter"
+
+match_enhancements:
+- "elastalert_enhancements.TimeEnhancement.TimeEnhancement"
+
+alert_text_type: alert_text_only
+alert_text: |
+  从 {} 到 {} 产生了 {} 次 错误日志
+
+  时间: {}
+
+  模块: {}
+
+  内容: {}
+
+  堆栈: `{}`
+
+alert_text_args:
+  - local_starttime
+  - local_endtime
+  - num_hits
+  - local_time
+  - app_name
+  - message
+  - stack_trace
+```
+
 ## Environment Variables(环境变量)
 
 ### Set at buildtime(构建时设置的变量)
